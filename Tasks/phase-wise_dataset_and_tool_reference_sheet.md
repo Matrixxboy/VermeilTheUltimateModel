@@ -1,167 +1,34 @@
-# 🧩 PHASE-WISE DATASET & TOOL REFERENCE SHEET
+# Phase-wise Dataset and Tool Reference Sheet
 
-### 🎯 Goal: Build Your Own Multimodal Generative AI Base Model (Text, Image, Audio, Voice, etc.)
+This document provides a reference for the datasets, tools, and key tasks for each phase of the Vermeil project.
 
----
+## Phase 1: Foundational Models (Text and Image)
 
-## ⚙️ **PHASE 0 — VISION & RESEARCH**
+| Modality | Key Tasks | Datasets | Preprocessing Tools | Training Tools | Evaluation Tools | Sources/Links |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Text** | - Download and preprocess Wikipedia, BookCorpus, and Common Crawl datasets.<br>- Build and train a SentencePiece tokenizer on the preprocessed text data.<br>- Implement a Transformer-based language model using PyTorch and Hugging Face Transformers.<br>- Train the language model on the preprocessed text data, monitoring perplexity on a validation set.<br>- Implement evaluation scripts for BLEU and ROUGE scores. | - Wikipedia (en)<br>- BookCorpus<br>- Common Crawl | - `spaCy`<br>- `NLTK`<br>- `Hugging Face Datasets` | - `PyTorch`<br>- `Hugging Face Transformers`<br>- `TensorBoard` | - `BLEU`<br>- `ROUGE`<br>- `Perplexity` | - [Wikipedia](https://dumps.wikimedia.org/)<br>- [BookCorpus](https://huggingface.co/datasets/bookcorpus)<br>- [Common Crawl](https://commoncrawl.org/)<br>- [spaCy](https://spacy.io/)<br>- [NLTK](https://www.nltk.org/)<br>- [Hugging Face](https://huggingface.co/) |
+| **Image** | - Download and set up ImageNet, COCO, and LAION-5B datasets.<br>- Implement data augmentation pipelines using Albumentations.<br>- Implement a GAN or Diffusion model using PyTorch and `timm`.<br>- Train the model on the preprocessed image data, monitoring FID and IS scores.<br>- Set up Weights & Biases to log training progress and sample outputs. | - ImageNet<br>- COCO<br>- LAION-5B | - `OpenCV`<br>- `Pillow`<br>- `Albumentations` | - `PyTorch`<br>- `timm`<br>- `Weights & Biases` | - `FID`<br>- `IS` | - [ImageNet](https://www.image-net.org/)<br>- [COCO](https://cocodataset.org/)<br>- [LAION-5B](https://laion.ai/blog/laion-5b/)<br>- [OpenCV](https://opencv.org/)<br>- [Pillow](https://python-pillow.org/)<br>- [timm](https://github.com/rwightman/pytorch-image-models) |
 
-**Goal:** Define architecture and get deep understanding of multimodal models.
+## Phase 2: Multimodal Integration
 
-| Category                   | Tools / Resources                                                                             | Purpose                                        |
-| -------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Research Papers            | [arXiv.org](https://arxiv.org), [PapersWithCode](https://paperswithcode.com/), Google Scholar | Study architectures (GPT, CLIP, Whisper, etc.) |
-| Repositories               | OpenAI GPT, Meta LLaMA, DeepMind Flamingo, Google Gemini                                      | Reference implementations                      |
-| Architecture Visualization | [Netron](https://netron.app/), Lucidchart, Draw.io                                            | Model architecture diagrams                    |
+| Task | Key Tasks | Datasets | Model Architecture | Training Tools | Evaluation Tools | Sources/Links |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Image Captioning** | - Implement a multimodal architecture with a Transformer decoder for caption generation.<br>- Train the model on COCO and Flickr30k datasets.<br>- Evaluate the model using CIDEr and SPICE metrics. | - COCO Captions<br>- Flickr30k | - `PyTorch`<br>- `einops` | - `PyTorch Lightning`<br>- `Deepspeed` | - `CIDEr`<br>- `SPICE` | - [COCO Captions](https://cocodataset.org/#captions-2015)<br>- [Flickr30k](http://shannon.cs.illinois.edu/DenotationGraph/)<br>- [einops](https://github.com/arogozhnikov/einops) |
+| **Visual Question Answering** | - Implement a VQA model that takes an image and a question as input and outputs an answer.<br>- Train the model on the VQA v2 and GQA datasets.<br>- Evaluate the model using the standard VQA accuracy metric. | - VQA v2<br>- GQA | - `PyTorch`<br>- `mmf` | - `PyTorch Lightning`<br>- `Horovod` | - `VQA Accuracy` | - [VQA v2](https://visualqa.org/download.html)<br>- [GQA](https://cs.stanford.edu/people/dorarad/gqa/)<br>- [mmf](https://mmf.sh/) |
+| **Text-to-Image** | - Implement a text-to-image generation model (e.g., a diffusion model conditioned on text embeddings).<br>- Train the model on Conceptual Captions and SBU Captions datasets.<br>- Evaluate the model using CLIP Score. | - Conceptual Captions<br>- SBU Captions | - `PyTorch`<br>- `x-transformers` | - `PyTorch Lightning`<br>- `DALI` | - `CLIP Score` | - [Conceptual Captions](https://ai.google.com/research/ConceptualCaptions/)<br>- [SBU Captions](http://www.cs.virginia.edu/~vicente/sbucaptions/)<br>- [x-transformers](https://github.com/lucidrains/x-transformers) |
 
----
+## Phase 3: Scaling and Optimization
 
-## 🧠 **PHASE 1 — MODEL ARCHITECTURE DESIGN**
+| Area | Key Tasks | Tools | Description | Sources/Links |
+| :--- | :--- | :--- | :--- | :--- |
+| **Distributed Training** | - Set up a multi-GPU training environment.<br>- Implement distributed training using PyTorch DDP or Deepspeed.<br>- Profile and optimize the distributed training performance. | - `PyTorch DDP`<br>- `Deepspeed`<br>- `Horovod` | For training models on multiple GPUs and nodes. | - [PyTorch DDP](https://pytorch.org/tutorials/intermediate/ddp_tutorial.html)<br>- [Deepspeed](https://www.deepspeed.ai/)<br>- [Horovod](https://horovod.ai/) |
+| **Quantization** | - Apply post-training quantization to the trained models.<br>- Evaluate the performance of the quantized models.<br>- Experiment with quantization-aware training for better performance. | - `PyTorch Quantization`<br>- `ONNX Runtime` | For reducing model size and improving inference speed. | - [PyTorch Quantization](https://pytorch.org/docs/stable/quantization.html)<br>- [ONNX Runtime](https://onnxruntime.ai/) |
+| **Pruning** | - Apply magnitude-based pruning to the trained models.<br>- Evaluate the performance of the pruned models.<br>- Fine-tune the pruned models to recover any lost performance. | - `PyTorch Pruning`<br>- `torch-pruning` | For removing redundant model parameters. | - [PyTorch Pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)<br>- [torch-pruning](https://github.com/VainF/Torch-Pruning) |
 
-**Goal:** Define encoders, decoders, and shared latent structure.
+## Phase 4: Advanced Capabilities and Deployment
 
-| Task                | Tools / Frameworks                                 | Notes                           |
-| ------------------- | -------------------------------------------------- | ------------------------------- |
-| Model Prototyping   | PyTorch / TensorFlow / JAX                         | Choose one main framework       |
-| Model Visualization | TorchSummary, `torchviz`, WandB graphs             | Debug network architecture      |
-| Experiment Tracking | [Weights & Biases](https://wandb.ai/), TensorBoard | Track losses, hyperparams, runs |
-
----
-
-## 💾 **PHASE 2 — DATA COLLECTION**
-
-| Modality                | Datasets                                                                                                        | Tools to Gather / Download                                                              |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| 📝 **Text**             | • The Pile<br>• C4 (Colossal Cleaned Common Crawl)<br>• Wikipedia Dump<br>• OpenWebText2<br>• Books3 (filtered) | - Hugging Face Datasets (`datasets` lib)<br>- `wget`, `curl`, `hf_hub_download()`       |
-| 🖼️ **Image**           | • LAION-400M / 5B<br>• ImageNet-21k<br>• COCO Captions<br>• OpenImages V7                                       | - `img2dataset` tool<br>- Kaggle Datasets<br>- Google Images Scraper (via API)          |
-| 🔉 **Audio / Speech**   | • LibriSpeech<br>• Mozilla CommonVoice<br>• AudioSet<br>• VoxCeleb                                              | - `torchaudio.datasets`<br>- HuggingFace Hub<br>- YouTube Audio Scraping (via `yt-dlp`) |
-| 🎥 **Video (optional)** | • HowTo100M<br>• YouCook2<br>• WebVid-2M                                                                        | - FFmpeg extraction<br>- `pytube`, `ffmpeg`                                             |
-| 🧩 **Multimodal**       | • COCO Captions<br>• Conceptual Captions<br>• WIT (Wikipedia Image-Text)<br>• CLIP dataset                      | - `datasets.load_dataset()`<br>- LAION subset builder                                   |
-
----
-
-## 🧹 **PHASE 3 — DATA PREPROCESSING & CLEANING**
-
-| Task             | Tools / Libraries                                                     | Notes                                    |
-| ---------------- | --------------------------------------------------------------------- | ---------------------------------------- |
-| Text Cleaning    | `spaCy`, `nltk`, `ftfy`, `regex`, `langdetect`                        | Remove junk, normalize casing            |
-| Tokenization     | `sentencepiece`, `tiktoken`, `huggingface/tokenizers`                 | Build vocabulary                         |
-| Image Processing | `opencv-python`, `Pillow`, `albumentations`, `torchvision.transforms` | Resize, normalize, augment               |
-| Audio Processing | `librosa`, `torchaudio`, `pydub`                                      | Convert to Mel spectrogram, trim silence |
-| Data Labeling    | CVAT, Label Studio, MakeSense.ai                                      | For image/audio caption alignment        |
-| Storage          | `sqlite3`, `MongoDB`, or JSON / Parquet                               | Store metadata with paths                |
-
----
-
-## 🧩 **PHASE 4 — MODEL IMPLEMENTATION**
-
-| Subsystem              | Framework / Tool                                         | Description                        |
-| ---------------------- | -------------------------------------------------------- | ---------------------------------- |
-| Text Encoder / Decoder | PyTorch / Hugging Face Transformers                      | Custom Transformer (GPT, T5 style) |
-| Image Encoder          | ViT / ResNet / CLIP Encoder                              | Encode image features              |
-| Image Decoder          | U-Net (Diffusion) / StyleGAN / Latent Diffusion          | Generate images from latent        |
-| Audio Encoder          | Wav2Vec2 / Whisper Encoder                               | Encode audio spectrograms          |
-| Audio Decoder          | HiFi-GAN / WaveNet                                       | Text → Speech                      |
-| Multimodal Fusion      | Cross-Attention / Projection Heads                       | Merge latent spaces                |
-| Loss Functions         | `torch.nn.CrossEntropyLoss`, `MSELoss`, Contrastive Loss | For modality-specific training     |
-
----
-
-## ⚡ **PHASE 5 — TRAINING PIPELINE SETUP**
-
-| Category        | Tool                                       | Use                                    |
-| --------------- | ------------------------------------------ | -------------------------------------- |
-| Framework       | PyTorch Lightning / DeepSpeed / Accelerate | Manage multi-GPU & gradient efficiency |
-| Optimizers      | AdamW, Lion, Adafactor                     | Training optimizers                    |
-| Scheduling      | CosineAnnealingLR, OneCycleLR              | Learning rate control                  |
-| Mixed Precision | AMP (Automatic Mixed Precision)            | Faster FP16 training                   |
-| DataLoader      | PyTorch Datasets / WebDataset              | Stream large-scale data efficiently    |
-| Logging         | TensorBoard, WandB, Comet.ml               | Track experiments                      |
-| Cloud GPU       | Kaggle, Colab Pro, RunPod, LambdaLabs      | Training environment                   |
-
----
-
-## 🔥 **PHASE 6 — MULTIMODAL ALIGNMENT TRAINING**
-
-| Task                     | Tools / Datasets                        | Notes                               |
-| ------------------------ | --------------------------------------- | ----------------------------------- |
-| Text ↔ Image             | COCO Captions, Conceptual Captions, WIT | Use CLIP-style contrastive learning |
-| Text ↔ Audio             | CommonVoice, AudioCaps, Clotho          | Pair transcript with audio          |
-| Image ↔ Audio (optional) | VGGSound                                | Multimodal grounding                |
-| Fusion Training          | PyTorch Lightning / DeepSpeed           | Train encoders + fusion transformer |
-| Evaluation Metrics       | Recall@k, CLIPScore, BLEU               | Cross-modal alignment metrics       |
-
----
-
-## 🧠 **PHASE 7 — EVALUATION & TESTING**
-
-| Category         | Tools / Frameworks                 | Metrics                      |
-| ---------------- | ---------------------------------- | ---------------------------- |
-| Text Generation  | NLTK, SacreBLEU, Rouge, Perplexity | BLEU, ROUGE, PPL             |
-| Image Generation | FID, IS, CLIPScore                 | Evaluate quality and realism |
-| Audio / Speech   | WER, PESQ                          | Accuracy and clarity         |
-| Visualization    | Matplotlib, Seaborn, WandB charts  | Compare results visually     |
-
----
-
-## 🚀 **PHASE 8 — DEPLOYMENT**
-
-| Task             | Tools / Frameworks                                 | Notes                                              |
-| ---------------- | -------------------------------------------------- | -------------------------------------------------- |
-| Backend API      | FastAPI / Flask / TorchServe                       | Serve `/generate`, `/caption`, `/speech` endpoints |
-| Model Packaging  | TorchScript, ONNX, TensorRT                        | Export optimized models                            |
-| Frontend UI      | React + Tailwind / Next.js                         | Build multimodal interface                         |
-| Hosting          | Render, Railway, Hugging Face Spaces, Local Docker | Free or local deployment                           |
-| Containerization | Docker, Podman                                     | Self-contained model runtime                       |
-
----
-
-## 🧩 **PHASE 9 — OPTIMIZATION & FINE-TUNING**
-
-| Goal                       | Tool / Technique                           | Description                           |
-| -------------------------- | ------------------------------------------ | ------------------------------------- |
-| Parameter-Efficient Tuning | LoRA, QLoRA, AdapterFusion                 | Fine-tune efficiently on smaller GPUs |
-| Compression                | Quantization (INT8/FP16), Pruning          | Reduce size, keep precision           |
-| Evaluation                 | DeepSpeed Inference, Optimum               | Run inference faster                  |
-| Distillation               | Knowledge Distillation (Teacher → Student) | Build lighter student models          |
-
----
-
-## 🧠 **PHASE 10 — INTELLIGENCE CORE & CONTINUOUS LEARNING**
-
-| Task                    | Tool / Framework                                  | Notes                             |
-| ----------------------- | ------------------------------------------------- | --------------------------------- |
-| Memory & Context DB     | FAISS, ChromaDB, SQLite                           | Store embeddings & user knowledge |
-| Self-Learning Loop      | RLHF (Reinforcement Learning from Human Feedback) | Human preference fine-tuning      |
-| Vectorization           | SentenceTransformers, OpenCLIP                    | Embed multimodal data             |
-| RAG System              | LangChain (local) / LlamaIndex                    | Augment responses with context    |
-| Continuous Data Capture | Logging user queries, retraining scheduler        | Improve over time                 |
-
----
-
-## 🗂️ **BONUS: HARDWARE RECOMMENDATIONS**
-
-| Scale                 | Suggested Setup                        | Notes                             |
-| --------------------- | -------------------------------------- | --------------------------------- |
-| Small-scale prototype | 1 × NVIDIA T4 / RTX 3060 (12GB)        | Ideal for single-modality testing |
-| Mid-scale             | 2 × RTX 4090 / A6000                   | Train multi-modality efficiently  |
-| Research-scale        | Multi-node A100s (RunPod / LambdaLabs) | Full-scale base model pretraining |
-
----
-
-## 🧱 **REFERENCE SUMMARY TABLE**
-
-| Phase | Datasets                     | Main Tools                       | Output                 |
-| ----- | ---------------------------- | -------------------------------- | ---------------------- |
-| 0     | Research Papers              | PapersWithCode, arXiv            | Vision Doc             |
-| 1     | —                            | PyTorch, JAX                     | Architecture Blueprint |
-| 2     | The Pile, LAION, CommonVoice | HF Datasets, img2dataset         | Raw Data               |
-| 3     | COCO, LibriSpeech            | OpenCV, Librosa, SpaCy           | Cleaned Data           |
-| 4     | —                            | PyTorch, Transformers, Diffusers | Model Code             |
-| 5     | —                            | Lightning, DeepSpeed             | Training Pipeline      |
-| 6     | COCO, AudioCaps              | CLIP Loss, Cross-Attention       | Aligned Latent Space   |
-| 7     | —                            | Matplotlib, NLTK                 | Evaluation Metrics     |
-| 8     | —                            | FastAPI, TorchServe              | Working API            |
-| 9     | —                            | LoRA, Quantization               | Optimized Model        |
-| 10    | —                            | FAISS, LangChain                 | Self-Learning System   |
-
+| Area | Key Tasks | Tools | Description | Sources/Links |
+| :--- | :--- | :--- | :--- | :--- |
+| **Audio** | - Implement an audio processing pipeline using Librosa and torchaudio.<br>- Train a speech-to-text model on a public dataset (e.g., LibriSpeech).<br>- Integrate the audio modality into the unified model. | - `Librosa`<br>- `torchaudio`<br>- `SpeechRecognition` | For processing and transcribing audio data. | - [Librosa](https://librosa.org/)<br>- [torchaudio](https://pytorch.org/audio/stable/index.html)<br>- [SpeechRecognition](https://github.com/Uberi/speech_recognition) |
+| **API Deployment** | - Create a FastAPI application to serve the model.<br>- Dockerize the application and create a Docker Compose file for easy deployment.<br>- Deploy the model to a cloud service (e.g., AWS, GCP, Azure). | - `FastAPI`<br>- `Uvicorn`<br>- `Docker`<br>- `Kubernetes` | For creating a scalable and robust API for the model. | - [FastAPI](https://fastapi.tiangolo.com/)<br>- [Uvicorn](https://www.uvicorn.org/)<br>- [Docker](https://www.docker.com/)<br>- [Kubernetes](https://kubernetes.io/) |
+| **Demo Interface** | - Create a Gradio demo for the model.<br>- Host the demo on Hugging Face Spaces or another public platform. | - `Gradio`<br>- `Streamlit` | For building interactive web-based demos. | - [Gradio](https://www.gradio.app/)<br>- [Streamlit](https://streamlit.io/) |
